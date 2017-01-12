@@ -14,6 +14,7 @@ const commander = require('commander');
 const clone = require('abacus-clone');
 const oauth = require('abacus-oauth');
 const dbclient = require('abacus-dbclient');
+const mappings = require('abacus-plan-mappings');
 
 // Parse command line options
 const argv = clone(process.argv);
@@ -131,6 +132,9 @@ describe('abacus-smoke-test', function() {
 
     // Delete test dbs on the configured db server
     dbclient.drop(process.env.DB, /^abacus-/, done);
+    mappings.storeDefaultMappings(() => {
+      _.once(done);
+    });
   });
 
   it('submits usage for a sample resource and retrieves an aggregated ' +
